@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import LoginPage from './pages/login';
 import Parse from 'parse';
+import 'antd/dist/antd.css'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function App() {
   Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
@@ -11,7 +13,10 @@ function App() {
     '' // This is your Javascript key
   );
   return (
-    <LoginPage></LoginPage>
+    <Router>
+      <Route exact path="/" component={LoginPage}/>
+    </Router>
+    // <LoginPage></LoginPage>
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
