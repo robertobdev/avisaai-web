@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, Popconfirm, message, Button } from 'antd';
 import Parse from 'parse';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './news.css';
 
 const NewsListPage = () => {
   const News = Parse.Object.extend('News');
   const query = new Parse.Query(News);
   const [data, setData] = useState([]);
+  const handleConfirm = (key) => {
+    query.get(key).then((object) => {
+      object.destroy().then((response) => {
+        getAll();
+        console.log('Deleted News', response);
+      }, (error) => {
+        console.error('Error while deleting News', error);
+      });
+    });
+  }
   const columns = [
     {
       title: 'Título',
@@ -27,14 +38,25 @@ const NewsListPage = () => {
             Editar
           </Link>
           <Divider type="vertical" />
-          <a>Deletar</a>
+          <Popconfirm
+            title="Tem certeza que deseja deletar?"
+            onConfirm={() => handleConfirm(news.key)}
+            okText="Sim"
+            cancelText="Não"
+          >
+            <a href="#">Deletar</a>
+          </Popconfirm>
         </span>
       ),
     },
   ];
   useEffect(() => {
+    getAll();
+  }, []);
+
+  const getAll = () => {
+    const query = new Parse.Query(News);
     query.find().then(results => {
-      console.log(results);
       results = results.map(({ id, attributes }) => {
         attributes = { ...attributes };
         attributes.key = id;
@@ -43,10 +65,17 @@ const NewsListPage = () => {
       })
       setData(results);
     });
-  }, []);
+  }
 
   return (
-    <Table columns={columns} dataSource={data} />
+    <>
+      <Button>
+        <Link to={`/panel/news/add/`}>
+          Nova notícia
+        </Link>
+      </Button>
+      <Table columns={columns} dataSource={data} />
+    </>
   )
 }
 
