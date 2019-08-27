@@ -5,19 +5,17 @@ import LoginPage from './pages/login';
 import Parse from 'parse';
 import 'antd/dist/antd.css';
 import 'ant-design-pro/dist/ant-design-pro.min.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import SiderDemo from './pages/layout';
 import { Button } from 'antd';
 import Exception from 'ant-design-pro/lib/Exception';
-window.auth = function (Component) {
-  // let token = window.localStorage.getItem("app_session_token")
-  // token = (token === null) ? "" : token
-  // return (new Parse.Session().isValid(token) && !!Parse.User.current()) ? <Component /> : <LoginApp />
-  return <Component />;
+window.auth = function (Component, props) {
+  let token = localStorage.getItem("app_session_token")
+  token = (token === null) ? "" : token
+  return (new Parse.Session().isValid(token) && !!Parse.User.current()) ? <Component /> : <Redirect to="/" push={true} />
 }
 
-
-const App = () => {
+const App = (props) => {
   Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
   Parse.initialize(
     '', // This is your Application ID
@@ -27,7 +25,7 @@ const App = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={LoginPage} />
-        <Route path="/panel/" render={() => window.auth(SiderDemo)} />
+        <Route path="/panel/" render={() => window.auth(SiderDemo, props)} />
         <Route exact render={() => {
           return <Exception type="404" style={{
             minHeight: 500,
