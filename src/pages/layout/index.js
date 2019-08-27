@@ -1,16 +1,20 @@
 import React, { useState, Component } from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Popconfirm } from 'antd';
 import './layout.css';
 import NewsPage from '../../modules/news/index';
 import NewsAddPage from '../../modules/news/save/index';
-import { Route, Link } from 'react-router-dom';
-
+import { Route, Link, withRouter } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
-const SiderDemo = () => {
+
+const SiderDemo = withRouter(({ history }) => {
 
   const [collapsed, setCollapsed] = useState(false);
   const renderRoutedComponent = (_component, props) => {
     return <_component props={props} />;
+  }
+  const handleLogout = () => {
+    localStorage.clear();
+    history.push('/');
   }
   return (
     <Layout className="layout-panel">
@@ -30,6 +34,16 @@ const SiderDemo = () => {
           <Menu.Item key="3">
             <Icon type="upload" />
             <span>nav 3</span>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Icon type="upload" />
+            <Popconfirm
+              onConfirm={handleLogout}
+              title="Você deseja sair？"
+              icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+            >
+              <span href="#">Sair</span>
+            </Popconfirm>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -65,6 +79,6 @@ const SiderDemo = () => {
       </Layout>
     </Layout>
   );
-}
+});
 
 export default SiderDemo;
