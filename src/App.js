@@ -3,10 +3,21 @@ import logo from './logo.svg';
 import './App.css';
 import LoginPage from './pages/login';
 import Parse from 'parse';
-import 'antd/dist/antd.css'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import 'antd/dist/antd.css';
+import 'ant-design-pro/dist/ant-design-pro.min.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import SiderDemo from './pages/layout';
+import { Button } from 'antd';
+import Exception from 'ant-design-pro/lib/Exception';
+window.auth = function (Component) {
+  // let token = window.localStorage.getItem("app_session_token")
+  // token = (token === null) ? "" : token
+  // return (new Parse.Session().isValid(token) && !!Parse.User.current()) ? <Component /> : <LoginApp />
+  return <Component />;
+}
 
-function App() {
+
+const App = () => {
   Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
   Parse.initialize(
     '', // This is your Application ID
@@ -14,25 +25,21 @@ function App() {
   );
   return (
     <Router>
-      <Route exact path="/" component={LoginPage}/>
+      <Switch>
+        <Route exact path="/" component={LoginPage} />
+        <Route path="/panel/" render={() => window.auth(SiderDemo)} />
+        <Route exact render={() => {
+          return <Exception type="404" style={{
+            minHeight: 500,
+            height: "80%",
+            marginTop: "100px"
+          }}
+            desc="Pagina não encontrada."
+            img='/images/404.svg'
+            linkElement={() => <Link to="/"><Button type="primary">Voltar à página inicial</Button></Link>} />
+        }} />
+      </Switch>
     </Router>
-    // <LoginPage></LoginPage>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
 
