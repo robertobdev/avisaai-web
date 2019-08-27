@@ -8,3 +8,11 @@
   font-size: 1.3em;
   margin-bottom: 1em;
 }
+
+.NewsSave-container {
+  margin: auto !important;
+  padding-top: 8rem !important;
+  display: block;
+  width: 70%;
+  text-align: center;
+}

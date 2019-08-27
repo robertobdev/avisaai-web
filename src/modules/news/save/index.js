@@ -1,7 +1,7 @@
 import Parse from 'parse';
 import React, { useState, useEffect } from 'react';
 import './news.css';
-import { Form, Icon, Input, Button, Upload, message } from 'antd';
+import { Form, Icon, Input, Button, Upload, message, PageHeader } from 'antd';
 const { TextArea } = Input;
 
 const NewsAddPage = (props) => {
@@ -11,7 +11,7 @@ const NewsAddPage = (props) => {
   const { match } = props.props;
   const [news, setNews] = useState(new News());
   useEffect(() => {
-    if (Object.keys(match.params) != '') {
+    if (Object.keys(match.params) !== '') {
       query.get(match.params.id).then(result => {
         if (result) {
           const { attributes } = result;
@@ -94,55 +94,69 @@ const NewsAddPage = (props) => {
       <div className="ant-upload-text">Upload</div>
     </div>
   );
+  const routes = [
+    {
+      path: '',
+      breadcrumbName: 'Notícias',
+    },
+    {
+      path: '',
+      breadcrumbName: 'Adicionar notícia',
+    },
+  ];
+
 
   return (
-    <Form layout="vertical" className="Login-container" onSubmit={handleSubmit}>
-      <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''}>
-        {getFieldDecorator('title', {
-          rules: [{ required: true, message: 'Por favor coloque o título da notícia.' }],
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Título"
-          />,
-        )}
-      </Form.Item>
-      <Form.Item validateStatus={descriptionError ? 'error' : ''} help={descriptionError || ''}>
-        {getFieldDecorator('description', {
-          rules: [{ required: true, message: 'Por favor coloque a descrição da notícia.' }],
-        })(
-          <TextArea
-            placeholder="Descrição"
-            autosize={{ minRows: 3, maxRows: 10 }}
-          />,
-        )}
-      </Form.Item>
-      <Form.Item validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
-        {getFieldDecorator('image', {
-          rules: [{ required: true, message: 'Por favor coloque a descrição da notícia.' }],
-        })(
-          <>
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
-            >
-              {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-            </Upload>
-          </>
-        )}
-      </Form.Item>
-      {error ? <div className="NewsSave-error">Error ao cadastrar notícia</div> : ''}
-      <Form.Item>
-        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-          Salvar
+    <>
+      <PageHeader title="" breadcrumb={{ routes }} />
+      <Form layout="vertical" className="NewsSave-container" onSubmit={handleSubmit}>
+        <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''}>
+          {getFieldDecorator('title', {
+            rules: [{ required: true, message: 'Por favor coloque o título da notícia.' }],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Título"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item validateStatus={descriptionError ? 'error' : ''} help={descriptionError || ''}>
+          {getFieldDecorator('description', {
+            rules: [{ required: true, message: 'Por favor coloque a descrição da notícia.' }],
+          })(
+            <TextArea
+              placeholder="Descrição"
+              autosize={{ minRows: 3, maxRows: 10 }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item validateStatus={imageError ? 'error' : ''} help={imageError || ''}>
+          {getFieldDecorator('image', {
+            rules: [{ required: true, message: 'Por favor coloque a descrição da notícia.' }],
+          })(
+            <>
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                beforeUpload={beforeUpload}
+                onChange={handleChange}
+              >
+                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+              </Upload>
+            </>
+          )}
+        </Form.Item>
+        {error ? <div className="NewsSave-error">Error ao cadastrar notícia</div> : ''}
+        <Form.Item>
+          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+            Salvar
         </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+    </>
   )
 };
 
