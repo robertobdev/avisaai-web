@@ -1,15 +1,16 @@
-import React, { useState, Component} from 'react';
+import React, { useState, Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import './layout.css';
-import NewsPage from '../news/index';
+import NewsPage from '../../modules/news/index';
+import NewsAddPage from '../../modules/news/save/index';
 import { Route, Link } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 const SiderDemo = () => {
 
   const [collapsed, setCollapsed] = useState(false);
-  const renderRoutedComponent = (_component) => {
-    return <_component/>;    
+  const renderRoutedComponent = (_component, props) => {
+    return <_component props={props} />;
   }
   return (
     <Layout className="layout-panel">
@@ -19,7 +20,7 @@ const SiderDemo = () => {
           <Menu.Item key="1">
             <Link to="/panel/news">
               <Icon type="read" />
-              <span>Notícias</span>              
+              <span>Notícias</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
@@ -49,9 +50,18 @@ const SiderDemo = () => {
           }}
         >
           <Route
+            exact
             path="/panel/news/"
             render={() => renderRoutedComponent(NewsPage)} />
-          </Content>
+          <Route
+            exact
+            path="/panel/news/add/:id"
+            render={(props) => renderRoutedComponent(NewsAddPage, props)} />
+          <Route
+            exact
+            path="/panel/news/add"
+            render={(props) => renderRoutedComponent(NewsAddPage, props)} />
+        </Content>
       </Layout>
     </Layout>
   );
