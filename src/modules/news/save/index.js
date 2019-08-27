@@ -1,10 +1,32 @@
 import Parse from 'parse';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './news.css';
 import { Form, Icon, Input, Button, Upload, message } from 'antd';
 const { TextArea } = Input;
 
-const NewsPage = (props) => {
+const NewsAddPage = (props) => {
+  const News = Parse.Object.extend('News');
+  const query = new Parse.Query(News);
+  const news = new News();
+  //TODO: remove this;
+  const { match } = props.props;
+  useEffect(() => {
+    if (Object.keys(match.params) != '') {
+      query.equalTo('objectId', match.params.id);
+      query.find().then(result => {
+        if (result.length) {
+          const { attributes } = result[0];
+          let form = props.form;
+          form.setFields({
+            title: {
+              value: attributes.title,
+            }
+          });
+        }
+      });
+    }
+  }, []);
+
   const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
 
   // Only show error after a field is touched.
@@ -34,11 +56,10 @@ const NewsPage = (props) => {
     }
   }
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const { title, description } = props.form.getFieldsValue(["title", "description"]);
-    const News = Parse.Object.extend('News');
-    const news = new News();
     news.set('image', new Parse.File((Math.random() * 1000).toString().replace('.', '') + `.png`, { base64: imageUrl }));
     news.set('title', title);
     news.set('description', description);
@@ -131,4 +152,4 @@ const beforeUpload = (file) => {
 }
 
 
-export default Form.create({ name: 'horizontal_login' })(NewsPage);;
+export default Form.create({ name: 'horizontal_login' })(NewsAddPage);;
