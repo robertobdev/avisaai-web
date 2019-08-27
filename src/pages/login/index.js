@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
 import Parse from 'parse';
 import './login.css';
@@ -14,19 +14,21 @@ const LoginPage = (props) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { username, password } = props.form.getFieldsValue(["username", "password"]);
     Parse.User.logIn(username, password).then((user) => {
-      // Do stuff after successful login
-      localStorage.setItem('user', user);
-      
+      localStorage.setItem("app_session_token", user.getSessionToken());
+      console.log(props);
+      props.history.push("/panel");
     }).catch(error => {
-      if (typeof document !== 'undefined') document.write(`Error while logging in user: ${JSON.stringify(error)}`);
-      console.error('Error while logging in user', error);
+      console.log(error);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
     });
   }
 
@@ -38,7 +40,7 @@ const LoginPage = (props) => {
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username"
+            placeholder="Usuário"
           />,
         )}
       </Form.Item>
@@ -49,13 +51,14 @@ const LoginPage = (props) => {
           <Input
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             type="password"
-            placeholder="Password"
+            placeholder="Senha"
           />,
         )}
       </Form.Item>
+      {error ? <div className="Login-error">Usuário ou senha inválido!</div> : ''}
       <Form.Item>
         <Button className="Login-button" type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-          Log in
+          Entrar
         </Button>
       </Form.Item>
     </Form>

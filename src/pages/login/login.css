@@ -5,3 +5,9 @@
   max-width: 550px;
   text-align: center;
 }
+
+.Login-error{
+  color:red;
+  font-size: 1.3em;
+  margin-bottom: 1em;
+}
