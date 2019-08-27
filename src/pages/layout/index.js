@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu, Icon, Popconfirm } from 'antd';
 import './layout.css';
 import NewsPage from '../../modules/news/index';
@@ -11,8 +11,8 @@ const { Header, Sider, Content } = Layout;
 const SiderDemo = withRouter(({ history }) => {
 
   const [collapsed, setCollapsed] = useState(false);
-  const renderRoutedComponent = (_component, props) => {
-    return <_component props={props} />;
+  const renderRoutedComponent = (Component, props) => {
+    return <Component props={props} />;
   }
   const handleLogout = () => {
     localStorage.clear();
@@ -30,8 +30,10 @@ const SiderDemo = withRouter(({ history }) => {
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Icon type="pushpin" />
-            <span>Marcações do Mapa Interativo</span>
+            <Link to="/panel/markers">
+              <Icon type="pushpin" />
+              <span>Marcações do Mapa</span>
+            </Link>
           </Menu.Item>
           <Menu.Item key="3">
             <Icon type="upload" />
@@ -50,7 +52,7 @@ const SiderDemo = withRouter(({ history }) => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }}>
+        <Header style={{ background: '#fff', padding: '0 0 0 16px' }}>
           <Icon
             className="trigger"
             type={collapsed ? 'menu-unfold' : 'menu-fold'}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Divider, Tag, Popconfirm, message, Button } from 'antd';
+import { Table, Divider, Popconfirm, Button, PageHeader} from 'antd';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
 import './markers.css';
@@ -55,12 +55,13 @@ const MarkersListPage = () => {
             okText="Sim"
             cancelText="Não"
           >
-            <a href="#">Deletar</a>
+            <a href="/">Deletar</a>
           </Popconfirm>
         </span>
       ),
     },
   ];
+  // eslint-disable-next-line
   useEffect(() => {
     getAll();
   }, []);
@@ -89,9 +90,18 @@ const MarkersListPage = () => {
       });
     });
   }
+  
+  const routes = [
+    {
+      path: '',
+      breadcrumbName: 'Marcações',
+    }
+  ];
+
 
   return (
     <>
+      <PageHeader title="" breadcrumb={{ routes }} />
       <Button>
         <Link to={`/panel/markers/add/`}>
           Nova Marcação

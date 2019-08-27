@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Divider, Tag, Popconfirm, message, Button } from 'antd';
+import { Table, Divider, Popconfirm, Button, PageHeader } from 'antd';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
 import './news.css';
@@ -44,7 +44,7 @@ const NewsListPage = () => {
             okText="Sim"
             cancelText="Não"
           >
-            <a href="#">Deletar</a>
+            <a href="/">Deletar</a>
           </Popconfirm>
         </span>
       ),
@@ -67,8 +67,17 @@ const NewsListPage = () => {
     });
   }
 
+  const routes = [
+    {
+      path: '',
+      breadcrumbName: 'Notícias',
+    }
+  ];
+
+
   return (
     <>
+      <PageHeader title="" breadcrumb={{ routes }} />
       <Button>
         <Link to={`/panel/news/add/`}>
           Nova notícia
