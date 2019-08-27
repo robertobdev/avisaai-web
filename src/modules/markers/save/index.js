@@ -1,7 +1,7 @@
 import Parse from 'parse';
 import React, { useState, useEffect } from 'react';
 import './save.css';
-import { Form, Icon, Input, Button, Select, message } from 'antd';
+import { Form, Icon, Input, Button, Select, message, PageHeader } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -19,8 +19,8 @@ const MarkerAddPage = (props) => {
   useEffect(() => {
     queryType.find().then(types => {
       setTypes(types);
-    })
-    if (Object.keys(match.params) != '') {
+    });
+    if (Object.keys(match.params) !== '') {
       query.get(match.params.id).then(result => {
         if (result) {
           const { attributes } = result;
@@ -97,79 +97,92 @@ const MarkerAddPage = (props) => {
           }, 4000);
           console.error('Error while creating or update Marker: ', error);
         }
-      );      
+      );
     }, 1000);
   }
+  const routes = [
+    {
+      path: '',
+      breadcrumbName: 'Marcações',
+    },
+    {
+      path: '',
+      breadcrumbName: 'Adicionar marcação',
+    },
+  ];
 
 
   return (
-    <Form layout="vertical" className="Login-container" onSubmit={handleSubmit}>
-      <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''}>
-        {getFieldDecorator('title', {
-          rules: [{ required: true, message: 'Por favor coloque o título.' }],
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Título"
-          />,
-        )}
-      </Form.Item>
-      <Form.Item validateStatus={descriptionError ? 'error' : ''} help={descriptionError || ''}>
-        {getFieldDecorator('description', {
-          rules: [{ required: true, message: 'Por favor coloque a descrição.' }],
-        })(
-          <TextArea
-            placeholder="Descrição"
-            autosize={{ minRows: 3, maxRows: 10 }}
-          />,
-        )}
-      </Form.Item>
-      <Form.Item validateStatus={placeError ? 'error' : ''} help={placeError || ''}>
-        {getFieldDecorator('place', {
-          rules: [{ required: true, message: 'Por favor coloque o local.' }],
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Lugar"
-          />,
-        )}
-      </Form.Item>
-      <div>
-        <Form.Item validateStatus={latitudeError ? 'error' : ''} help={latitudeError || ''}>
-          {getFieldDecorator('latitude', {
-            rules: [{ required: true, message: 'Por favor coloque a latitude.' }],
+    <>
+      <PageHeader title="" breadcrumb={{ routes }} />
+      <Form layout="vertical" className="MarkerSave-container" onSubmit={handleSubmit}>
+        <Form.Item validateStatus={titleError ? 'error' : ''} help={titleError || ''}>
+          {getFieldDecorator('title', {
+            rules: [{ required: true, message: 'Por favor coloque o título.' }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Latitude"
+              placeholder="Título"
             />,
           )}
         </Form.Item>
-        <Form.Item validateStatus={longitudeError ? 'error' : ''} help={longitudeError || ''}>
-          {getFieldDecorator('longitude', {
-            rules: [{ required: true, message: 'Por favor coloque a longitude.' }],
+        <Form.Item validateStatus={descriptionError ? 'error' : ''} help={descriptionError || ''}>
+          {getFieldDecorator('description', {
+            rules: [{ required: true, message: 'Por favor coloque a descrição.' }],
+          })(
+            <TextArea
+              placeholder="Descrição"
+              autosize={{ minRows: 3, maxRows: 10 }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item validateStatus={placeError ? 'error' : ''} help={placeError || ''}>
+          {getFieldDecorator('place', {
+            rules: [{ required: true, message: 'Por favor coloque o local.' }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Longitude"
+              placeholder="Lugar"
             />,
           )}
         </Form.Item>
-      </div>
-      <Form.Item>
-        <Select value={type} style={{ width: 120 }} onChange={(type) => setType(type)}>
-          {types.map(({ id, attributes }) => {
-            return <Option value={id} key={id}>{attributes.description}</Option>;
-          })}
-        </Select>
-      </Form.Item>
-      {error ? <div className="NewsSave-error">Error ao cadastrar notícia</div> : ''}
-      <Form.Item>
-        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-          Salvar
+        <div>
+          <Form.Item validateStatus={latitudeError ? 'error' : ''} help={latitudeError || ''}>
+            {getFieldDecorator('latitude', {
+              rules: [{ required: true, message: 'Por favor coloque a latitude.' }],
+            })(
+              <Input
+                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="Latitude"
+              />,
+            )}
+          </Form.Item>
+          <Form.Item validateStatus={longitudeError ? 'error' : ''} help={longitudeError || ''}>
+            {getFieldDecorator('longitude', {
+              rules: [{ required: true, message: 'Por favor coloque a longitude.' }],
+            })(
+              <Input
+                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="Longitude"
+              />,
+            )}
+          </Form.Item>
+        </div>
+        <Form.Item>
+          <Select value={type} style={{ width: 250 }} onChange={(type) => setType(type)}>
+            {types.map(({ id, attributes }) => {
+              return <Option value={id} key={id}>{attributes.description}</Option>;
+            })}
+          </Select>
+        </Form.Item>
+        {error ? <div className="NewsSave-error">Error ao cadastrar notícia</div> : ''}
+        <Form.Item>
+          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+            Salvar
         </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+    </>
   )
 };
 
