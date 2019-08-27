@@ -2,7 +2,9 @@ import React, { useState, Component } from 'react';
 import { Layout, Menu, Icon, Popconfirm } from 'antd';
 import './layout.css';
 import NewsPage from '../../modules/news/index';
+import MarkersPage from '../../modules/markers/index';
 import NewsAddPage from '../../modules/news/save/index';
+import MarkerAddPage from '../../modules/markers/save/index';
 import { Route, Link, withRouter } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 
@@ -28,8 +30,8 @@ const SiderDemo = withRouter(({ history }) => {
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Icon type="video-camera" />
-            <span>nav 2</span>
+            <Icon type="pushpin" />
+            <span>Marcações do Mapa Interativo</span>
           </Menu.Item>
           <Menu.Item key="3">
             <Icon type="upload" />
@@ -75,6 +77,18 @@ const SiderDemo = withRouter(({ history }) => {
             exact
             path="/panel/news/add"
             render={(props) => renderRoutedComponent(NewsAddPage, props)} />
+          <Route
+            exact
+            path="/panel/markers/"
+            render={() => renderRoutedComponent(MarkersPage)} />
+          <Route
+            exact
+            path="/panel/markers/add/:id"
+            render={(props) => renderRoutedComponent(MarkerAddPage, props)} />
+          <Route
+            exact
+            path="/panel/markers/add"
+            render={(props) => renderRoutedComponent(MarkerAddPage, props)} />
         </Content>
       </Layout>
     </Layout>
