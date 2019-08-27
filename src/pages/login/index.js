@@ -19,11 +19,11 @@ const LoginPage = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const {username, password } = props.form.getFieldsValue(["username", "password"]);
+    const { username, password } = props.form.getFieldsValue(["username", "password"]);
     Parse.User.logIn(username, password).then((user) => {
       // Do stuff after successful login
-      if (typeof document !== 'undefined') document.write(`Logged in user: ${JSON.stringify(user)}`);
-      console.log('Logged in user', user);
+      localStorage.setItem('user', user);
+      
     }).catch(error => {
       if (typeof document !== 'undefined') document.write(`Error while logging in user: ${JSON.stringify(error)}`);
       console.error('Error while logging in user', error);
@@ -38,7 +38,7 @@ const LoginPage = (props) => {
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username" 
+            placeholder="Username"
           />,
         )}
       </Form.Item>
