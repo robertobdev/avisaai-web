@@ -2,3 +2,9 @@
   width: 128px;
   height: 128px;
 }
+
+.NewsSave-error {
+  color: red;
+  font-size: 1.3em;
+  margin-bottom: 1em;
+}

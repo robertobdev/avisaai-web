@@ -7,22 +7,28 @@ const { TextArea } = Input;
 const NewsAddPage = (props) => {
   const News = Parse.Object.extend('News');
   const query = new Parse.Query(News);
-  const news = new News();
   //TODO: remove this;
   const { match } = props.props;
+  const [news, setNews] = useState(new News());
   useEffect(() => {
     if (Object.keys(match.params) != '') {
-      query.equalTo('objectId', match.params.id);
-      query.find().then(result => {
-        if (result.length) {
-          const { attributes } = result[0];
+      query.get(match.params.id).then(result => {
+        if (result) {
+          const { attributes } = result;
+          setNews(result);
           let form = props.form;
           form.setFields({
             title: {
               value: attributes.title,
+            },
+            description: {
+              value: attributes.description,
             }
           });
+          setImageUrl(attributes.image._url);
         }
+      }).catch(() => {
+        console.error('error');
       });
     }
   }, []);
@@ -38,11 +44,12 @@ const NewsAddPage = (props) => {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
+  const [error, setError] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(false);
 
   const handleChange = (info) => {
-    console.log('here');
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
@@ -57,22 +64,28 @@ const NewsAddPage = (props) => {
   }
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const { title, description } = props.form.getFieldsValue(["title", "description"]);
-    news.set('image', new Parse.File((Math.random() * 1000).toString().replace('.', '') + `.png`, { base64: imageUrl }));
+    if (!imageUrl.includes('http')) {
+      news.set('image', new Parse.File((Math.random() * 1000).toString().replace('.', '') + `.png`, { base64: imageUrl }));
+    }
     news.set('title', title);
     news.set('description', description);
-    // news.save().then(
-    //   (result) => {
-    //     if (typeof document !== 'undefined') document.write(`News created: ${JSON.stringify(result)}`);
-    //     console.log('News created', result);
-    //   },
-    //   (error) => {
-    //     if (typeof document !== 'undefined') document.write(`Error while creating News: ${JSON.stringify(error)}`);
-    //     console.error('Error while creating News: ', error);
-    //   }
-    // );
+    news.save().then(
+      (result) => {
+        message.success('Notícia salva.', 2).then(() => {
+          props.props.history.push('/panel/news');
+        });
+      },
+      (error) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 4000);
+        console.error('Error while creating or update News: ', error);
+      }
+    );
   }
 
   const uploadButton = (
@@ -123,14 +136,15 @@ const NewsAddPage = (props) => {
           </>
         )}
       </Form.Item>
+      {error ? <div className="NewsSave-error">Error ao cadastrar notícia</div> : ''}
       <Form.Item>
-        <Button className="Login-button" type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-          Log in
+        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+          Salvar
         </Button>
       </Form.Item>
     </Form>
   )
-}
+};
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -139,7 +153,6 @@ const getBase64 = (img, callback) => {
 }
 
 const beforeUpload = (file) => {
-  console.log('dsadsa', file);
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
