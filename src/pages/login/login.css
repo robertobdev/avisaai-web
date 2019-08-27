@@ -1,13 +1,18 @@
 .Login-container {
-  margin: 150px auto !important;
+  /* margin: 150px auto !important;
   display: block;
   width: 50%;
-  max-width: 550px;
+  max-width: 300em;
+  text-align: center; */
+  margin: auto !important;
+  padding-top: 20rem !important;
+  display: block;
+  width: 20%;
   text-align: center;
 }
 
-.Login-error{
-  color:red;
+.Login-error {
+  color: red;
   font-size: 1.3em;
   margin-bottom: 1em;
 }
