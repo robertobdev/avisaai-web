@@ -1,7 +1,7 @@
 import Parse from 'parse';
 import React, { useState, useEffect } from 'react';
 import './save.css';
-import { Form, Icon, Input, Button, Select, message, PageHeader } from 'antd';
+import { Form, Input, Button, Select, message, PageHeader } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -42,6 +42,9 @@ const MarkerAddPage = (props) => {
             },
             place: {
               value: attributes.place,
+            },
+            radius: {
+              value: attributes.radius,
             }
           });
           const type = result.relation("type_relation");
@@ -65,6 +68,7 @@ const MarkerAddPage = (props) => {
   const placeError = isFieldTouched('place') && getFieldError('place');
   const longitudeError = isFieldTouched('longitude') && getFieldError('longitude');
   const latitudeError = isFieldTouched('latitude') && getFieldError('latitude');
+  const radiusError = isFieldTouched('radius') && getFieldError('radius');
 
 
   const hasErrors = (fieldsError) => {
@@ -73,12 +77,13 @@ const MarkerAddPage = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { title, description, place, longitude, latitude } = props.form.getFieldsValue(["title", "description", "place", "longitude", "latitude", "type"]);
+    const { title, description, place, longitude, latitude, radius } = props.form.getFieldsValue(["title", "description", "place", "longitude", "latitude", "type", "radius"]);
     marker.set('title', title);
     marker.set('description', description);
     marker.set('latitude', latitude);
     marker.set('longitude', longitude);
     marker.set('place', place);
+    marker.set('radius', parseFloat(radius));
     let relation = marker.relation("type_relation");
     await queryType.get(type).then(typeData => {
       relation.add(typeData);
@@ -121,7 +126,6 @@ const MarkerAddPage = (props) => {
             rules: [{ required: true, message: 'Por favor coloque o título.' }],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Título"
             />,
           )}
@@ -136,12 +140,20 @@ const MarkerAddPage = (props) => {
             />,
           )}
         </Form.Item>
+        <Form.Item validateStatus={radiusError ? 'error' : ''} help={radiusError || ''}>
+          {getFieldDecorator('radius', {
+            rules: [{ required: true, message: 'Por favor coloque o raio.' }],
+          })(
+            <Input
+              placeholder="Raio"
+            />,
+          )}
+        </Form.Item>
         <Form.Item validateStatus={placeError ? 'error' : ''} help={placeError || ''}>
           {getFieldDecorator('place', {
             rules: [{ required: true, message: 'Por favor coloque o local.' }],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Lugar"
             />,
           )}
@@ -152,7 +164,6 @@ const MarkerAddPage = (props) => {
               rules: [{ required: true, message: 'Por favor coloque a latitude.' }],
             })(
               <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Latitude"
               />,
             )}
@@ -162,7 +173,6 @@ const MarkerAddPage = (props) => {
               rules: [{ required: true, message: 'Por favor coloque a longitude.' }],
             })(
               <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="Longitude"
               />,
             )}
