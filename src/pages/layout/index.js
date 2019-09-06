@@ -5,6 +5,9 @@ import NewsPage from '../../modules/news/index';
 import MarkersPage from '../../modules/markers/index';
 import NewsAddPage from '../../modules/news/save/index';
 import MarkerAddPage from '../../modules/markers/save/index';
+import NotificationListPage from '../../modules/notifications/index';
+import NotificationAddPage from '../../modules/notifications/save/index';
+
 import { Route, Link, withRouter } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 
@@ -36,11 +39,13 @@ const SiderDemo = withRouter(({ history }) => {
             </Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Icon type="upload" />
-            <span>nav 3</span>
+            <Link to="/panel/notifications">
+              <Icon type="notification" />
+              <span>Notificações</span>
+            </Link>
           </Menu.Item>
           <Menu.Item key="4">
-            <Icon type="upload" />
+            <Icon type="logout" />
             <Popconfirm
               onConfirm={handleLogout}
               title="Você deseja sair？"
@@ -91,6 +96,18 @@ const SiderDemo = withRouter(({ history }) => {
             exact
             path="/panel/markers/add"
             render={(props) => renderRoutedComponent(MarkerAddPage, props)} />
+          <Route
+            exact
+            path="/panel/notifications/"
+            render={() => renderRoutedComponent(NotificationListPage)} />
+          <Route
+            exact
+            path="/panel/notifications/add/:id"
+            render={(props) => renderRoutedComponent(NotificationAddPage, props)} />
+          <Route
+            exact
+            path="/panel/notifications/add"
+            render={(props) => renderRoutedComponent(NotificationAddPage, props)} />
         </Content>
       </Layout>
     </Layout>
