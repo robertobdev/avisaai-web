@@ -27,24 +27,30 @@ const SiderDemo = withRouter(({ history }) => {
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">
+            <Link to="/panel/">
+              <Icon type="home" />
+              <span>Início</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="2">
             <Link to="/panel/news">
               <Icon type="read" />
               <span>Notícias</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="3">
             <Link to="/panel/markers">
               <Icon type="pushpin" />
               <span>Marcações do Mapa</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="4">
             <Link to="/panel/notifications">
               <Icon type="notification" />
               <span>Notificações</span>
             </Link>
           </Menu.Item>
-          <Menu.Item key="4">
+          <Menu.Item key="5">
             <Icon type="logout" />
             <Popconfirm
               onConfirm={handleLogout}
