@@ -20,9 +20,12 @@ const LoginPage = (props) => {
     event.preventDefault();
     const { username, password } = props.form.getFieldsValue(["username", "password"]);
     Parse.User.logIn(username, password).then((user) => {
-      localStorage.setItem("app_session_token", user.getSessionToken());
-      console.log(props);
-      props.history.push("/panel");
+      if (user.attributes.isAdmin) {
+        localStorage.setItem("app_session_token", user.getSessionToken());
+        props.history.push("/panel");
+      } else {
+        setError(true);
+      }
     }).catch(error => {
       console.log(error);
       setError(true);
