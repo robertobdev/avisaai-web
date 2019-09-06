@@ -1,13 +1,5 @@
 .Login-container {
-  /* margin: 150px auto !important;
   display: block;
-  width: 50%;
-  max-width: 300em;
-  text-align: center; */
-  margin: auto !important;
-  padding-top: 20rem !important;
-  display: block;
-  width: 20%;
   text-align: center;
 }
 
@@ -15,4 +7,26 @@
   color: red;
   font-size: 1.3em;
   margin-bottom: 1em;
+}
+
+.Login-container-master {
+  background-color: #f6f5f8;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.Login-logo {
+  width: 10em;
+  margin-bottom: 30px;
+}
+
+.Login-box {
+  margin: auto !important;
+  display: block;
+  text-align: center;
+  background: #fff;
+  width: 30em;
+  padding: 16px;
+  border-radius: 10px;
 }

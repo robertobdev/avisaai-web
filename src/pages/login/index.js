@@ -33,35 +33,42 @@ const LoginPage = (props) => {
   }
 
   return (
-    <Form layout="vertical" className="Login-container" onSubmit={handleSubmit}>
-      <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
-        {getFieldDecorator('username', {
-          rules: [{ required: true, message: 'Please input your username!' }],
-        })(
-          <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Usuário"
-          />,
-        )}
-      </Form.Item>
-      <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
-        {getFieldDecorator('password', {
-          rules: [{ required: true, message: 'Please input your Password!' }],
-        })(
-          <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            type="password"
-            placeholder="Senha"
-          />,
-        )}
-      </Form.Item>
-      {error ? <div className="Login-error">Usuário ou senha inválido!</div> : ''}
-      <Form.Item>
-        <Button className="Login-button" type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-          Entrar
+    <div className="Login-container-master">
+      <div className="Login-box">
+
+
+        <img src="avisaailogo.png" className="Login-logo" />
+        <Form layout="vertical" className="Login-container" onSubmit={handleSubmit}>
+          <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
+            {getFieldDecorator('username', {
+              rules: [{ required: true, message: 'Please input your username!' }],
+            })(
+              <Input
+                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="Usuário"
+              />,
+            )}
+          </Form.Item>
+          <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your Password!' }],
+            })(
+              <Input
+                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                type="password"
+                placeholder="Senha"
+              />,
+            )}
+          </Form.Item>
+          {error ? <div className="Login-error">Usuário ou senha inválido!</div> : ''}
+          <Form.Item>
+            <Button className="Login-button" type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+              Entrar
         </Button>
-      </Form.Item>
-    </Form>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
   );
 }
 
