@@ -1,0 +1,13 @@
+.not-read {
+  background: red;
+}
+
+.read {
+  background: green;
+}
+
+.cicle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}

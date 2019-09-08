@@ -9,6 +9,7 @@ import NotificationListPage from '../../modules/notifications/index';
 import NotificationAddPage from '../../modules/notifications/save/index';
 
 import { Route, Link, withRouter } from 'react-router-dom';
+import MessagesListPage from '../../modules/message/index';
 const { Header, Sider, Content } = Layout;
 
 const SiderDemo = withRouter(({ history }) => {
@@ -51,6 +52,12 @@ const SiderDemo = withRouter(({ history }) => {
             </Link>
           </Menu.Item>
           <Menu.Item key="5">
+            <Link to="/panel/messages">
+              <Icon type="message" />
+              <span>Mensagens</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="6">
             <Icon type="logout" />
             <Popconfirm
               onConfirm={handleLogout}
@@ -114,6 +121,10 @@ const SiderDemo = withRouter(({ history }) => {
             exact
             path="/panel/notifications/add"
             render={(props) => renderRoutedComponent(NotificationAddPage, props)} />
+          <Route
+            exact
+            path="/panel/messages"
+            render={(props) => renderRoutedComponent(MessagesListPage, props)} />
         </Content>
       </Layout>
     </Layout>
